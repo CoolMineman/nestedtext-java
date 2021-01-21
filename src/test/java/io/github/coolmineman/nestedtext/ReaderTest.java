@@ -59,4 +59,37 @@ public class ReaderTest {
         JsonElement jsonElement = JsonUtil.readJson(jsonFile);
         JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1", "2", "8"})
+    void list(String a) throws Exception {
+        String dir = "nestedtext_tests/test_cases/list_" + a + "/";
+        FileInputStream ntFile = new FileInputStream(dir + "load_in.nt");
+        FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
+        NestedTextNode node = NestedTextReader.read(ntFile);
+        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
+        JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1", "2", "3", "4", "7", "8", "9"})
+    void string(String a) throws Exception {
+        String dir = "nestedtext_tests/test_cases/string_" + a + "/";
+        FileInputStream ntFile = new FileInputStream(dir + "load_in.nt");
+        FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
+        NestedTextNode node = NestedTextReader.read(ntFile);
+        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
+        JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"01", "02", "03", "04", "11", "12"})
+    void stringMultiline(String a) throws Exception {
+        String dir = "nestedtext_tests/test_cases/string_multiline_" + a + "/";
+        FileInputStream ntFile = new FileInputStream(dir + "load_in.nt");
+        FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
+        NestedTextNode node = NestedTextReader.read(ntFile);
+        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
+        JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
+    }
 }

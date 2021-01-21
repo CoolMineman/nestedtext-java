@@ -1,6 +1,5 @@
 package io.github.coolmineman.nestedtext.impl;
 
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,7 +107,7 @@ public class NestedTextLexer {
             KeyWithLeafLine result00 = new KeyWithLeafLine();
             result00.indentSpaces = indent;
             if (colonSpaceIndex == -1) throw new NestedTextParseException(lineNumber, 0, "Invalid Line (Comment Should Start With #)");
-            result00.key = line.substring(i, colonSpaceIndex).stripTrailing();;
+            result00.key = line.substring(i, colonSpaceIndex).stripTrailing();
             result00.leaf = line.substring(colonSpaceIndex + 2);
             return result00;
         }

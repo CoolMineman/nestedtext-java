@@ -105,7 +105,6 @@ public final class NestedTextReader {
                                 leafBuilder.append('\n');
                                 j++;
                                 if (j >= lines.size()) {
-                                    j--;
                                     break;
                                 }
                                 line2 = lines.get(j);
@@ -137,7 +136,6 @@ public final class NestedTextReader {
                                 leafBuilder.append('\n');
                                 j++;
                                 if (j >= lines.size()) {
-                                    j--;
                                     break;
                                 }
                                 line2 = lines.get(j);
@@ -152,6 +150,21 @@ public final class NestedTextReader {
                             expectedIndentPositive = true;
                         }
                     }
+                } else if (line instanceof StringLine) {
+                    if (root.isList() || root.isMap()) {
+                        throw new NestedTextParseException(i, 0, "Unclaimed String");
+                    }
+                    StringBuilder returnStringBuilder = new StringBuilder();
+                    for (; i < lines.size(); i++) {
+                        StringLine stringLine = (StringLine) lines.get(i);
+                        if (stringLine.indentSpaces != line.indentSpaces) {
+                            throw new NestedTextParseException(i, 0, "Illegal Indent");
+                        }
+                        returnStringBuilder.append(stringLine.string);
+                        returnStringBuilder.append('\n');
+                    }
+                    returnStringBuilder.setLength(returnStringBuilder.length() - 1); // Remove Last Newline
+                    return NestedTextNode.of(returnStringBuilder.toString());
                 }
             }
         }

@@ -1,6 +1,5 @@
 package io.github.coolmineman.nestedtext.api.tree;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
