@@ -36,7 +36,7 @@ public class JsonUtil {
                 assertNtEqualsJson(map.get(entry.getKey()), entry.getValue());
             }
         } else {
-            assertTrue(node.isLeaf());
+            assertTrue(node.isLeaf(), "Failed For Leaf:" + jsonElement.toString());
             assertEquals(jsonElement.getAsString(), node.asLeafString());
         }
     }

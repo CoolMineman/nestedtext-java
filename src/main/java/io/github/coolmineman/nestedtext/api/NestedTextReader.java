@@ -37,11 +37,12 @@ public final class NestedTextReader {
         List<Line> lines = new ArrayList<>();
         try {
             int current = reader.read();
+            String line;
 
             while (current != -1) {
                 // NestedText ignores empty lines special handling for \n\r is not needed
                 if (current == '\n' || current == '\r') {
-                    String line = lineBuilder.toString();
+                    line = lineBuilder.toString();
                     if (!isBlankLine(line)) {
                         Line line1 = NestedTextLexer.lexLine(line, lineNumber);
                         if (!(line1 instanceof CommentLine)) lines.add(line1); // Ignore Comments (For Now)
@@ -53,6 +54,11 @@ public final class NestedTextReader {
                 }
                 current = reader.read();
             }
+            line = lineBuilder.toString();
+            if (!isBlankLine(line)) {
+                Line line1 = NestedTextLexer.lexLine(line, lineNumber);
+                if (!(line1 instanceof CommentLine)) lines.add(line1); // Ignore Comments (For Now)
+            }
             return parseLines(lines);
         } catch (Exception e) {
             throw new NestedTextParseException(e);
@@ -63,21 +69,24 @@ public final class NestedTextReader {
         NestedTextBranch root = new NestedTextBranch();
         List<NestedTextBranch> stack = new ArrayList<>();
         stack.add(root);
-        int indentSize = -1;
+        List<Integer> indentSizes = new ArrayList<>();
         int expectedIndent = 0;
+        boolean expectedIndentPositive = false;
         for (int i = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
-            if (indentSize == -1 && line.indentSpaces > 0) indentSize = line.indentSpaces;
-            if (expectedIndent == -1 && indentSize != -1) expectedIndent = indentSize;
             if (!(line instanceof CommentLine)) {
-                while (line.indentSpaces < expectedIndent) {
-                    stack.remove(stack.size() - 1);
-                    expectedIndent -= indentSize;
+                if (expectedIndentPositive && (indentSizes.isEmpty() ? line.indentSpaces > 0 : line.indentSpaces > indentSizes.get(indentSizes.size() - 1))) {
+                    expectedIndentPositive = false;
+                    expectedIndent = line.indentSpaces;
+                    indentSizes.add(line.indentSpaces - sum(indentSizes));
                 }
-                if (line.indentSpaces == 0 && expectedIndent == -1) {
+
+                while (line.indentSpaces < expectedIndent || (expectedIndentPositive && line.indentSpaces == expectedIndent)) {
+                    if (!expectedIndentPositive && !indentSizes.isEmpty()) expectedIndent -= indentSizes.remove(indentSizes.size() - 1);
+                    expectedIndentPositive = false;
                     stack.remove(stack.size() - 1);
-                    expectedIndent = 0;
                 }
+
                 if (line instanceof KeyLine) {
                     NestedTextBranch branch = stack.get(stack.size() - 1);
                     if (line instanceof KeyWithLeafLine) {
@@ -90,12 +99,15 @@ public final class NestedTextReader {
                             int j = i + 1;
                             Line line2;
                             line2 = lines.get(j);
-                            if (indentSize == -1 && line2.indentSpaces > 0) indentSize = line2.indentSpaces;
-                            while ((line2 instanceof StringLine) && line2.indentSpaces == expectedIndent + indentSize) {
+                            int expectedIndent2 = line2.indentSpaces;
+                            while ((line2 instanceof StringLine) && line2.indentSpaces == expectedIndent2) {
                                 leafBuilder.append(((StringLine)line2).string);
                                 leafBuilder.append('\n');
                                 j++;
-                                if (j >= lines.size()) break;
+                                if (j >= lines.size()) {
+                                    j--;
+                                    break;
+                                }
                                 line2 = lines.get(j);
                             }
                             i = j - 1;
@@ -105,7 +117,7 @@ public final class NestedTextReader {
                             NestedTextBranch newBranch = new NestedTextBranch();
                             stack.get(stack.size() - 1).asMap().put(((KeyLine)line).key, newBranch);
                             stack.add(newBranch);
-                            expectedIndent += indentSize;
+                            expectedIndentPositive = true;
                         }
                     }
                 } else if (line instanceof ListItemLine) {
@@ -114,17 +126,20 @@ public final class NestedTextReader {
                         ListItemWithLeafLine listItemWithLeafLine = (ListItemWithLeafLine)line;
                         branch.asList().add(new NestedTextLeaf(listItemWithLeafLine.leaf));
                     } else {
-                        if (lines.get(i + 1) instanceof StringLine) {
+                        if (lines.size() - 1 >= i + 1 && lines.get(i + 1) instanceof StringLine) {
                             StringBuilder leafBuilder = new StringBuilder();
                             int j = i + 1;
                             Line line2;
                             line2 = lines.get(j);
-                            if (indentSize == -1 && line2.indentSpaces > 0) indentSize = line2.indentSpaces;
-                            while (line2 instanceof StringLine && line2.indentSpaces == expectedIndent + indentSize) {
+                            int expectedIndent2 = line2.indentSpaces;
+                            while (line2 instanceof StringLine && line2.indentSpaces == expectedIndent2) {
                                 leafBuilder.append(((StringLine)line2).string);
                                 leafBuilder.append('\n');
                                 j++;
-                                if (j >= lines.size()) break;
+                                if (j >= lines.size()) {
+                                    j--;
+                                    break;
+                                }
                                 line2 = lines.get(j);
                             }
                             i = j - 1;
@@ -134,13 +149,21 @@ public final class NestedTextReader {
                             NestedTextBranch newBranch = new NestedTextBranch();
                             stack.get(stack.size() - 1).asList().add(newBranch);
                             stack.add(newBranch);
-                            expectedIndent += indentSize;
+                            expectedIndentPositive = true;
                         }
                     }
                 }
             }
         }
         return root;
+    }
+
+    private static int sum(List<Integer> list) {
+        int result = 0;
+        for (int i = 0; i < list.size(); i++) {
+            result += list.get(i);
+        }
+        return result;
     }
 
     private static boolean isBlankLine(String string) {

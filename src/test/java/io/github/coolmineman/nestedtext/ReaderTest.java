@@ -31,6 +31,13 @@ public class ReaderTest {
     }
 
     @Test
+    void edgeCase1() { //No Newline
+        NestedTextNode node = NestedTextReader.read(new StringReader("-\n\n-  — "));
+        assertEquals("", node.asList().get(0).asLeafString());
+        assertEquals(" — ", node.asList().get(1).asLeafString());
+    }
+
+    @Test
     void holistic_1() throws Exception {
         FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_1/load_in.nt");
         FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_1/load_out.json");
