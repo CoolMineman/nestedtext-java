@@ -11,21 +11,20 @@ import com.google.gson.JsonElement;
 import org.junit.jupiter.api.Test;
 
 import io.github.coolmineman.nestedtext.api.NestedTextReader;
-import io.github.coolmineman.nestedtext.api.tree.NestedTextBranch;
 import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
 import io.github.coolmineman.nestedtext.util.JsonUtil;
 
 public class ReaderTest {
     @Test
     void readerTest1() {
-        NestedTextBranch branch = (NestedTextBranch) NestedTextReader.read(new StringReader(
+        NestedTextNode branch = NestedTextReader.read(new StringReader(
                 "vice president:\n    name: Margaret Hodge\n    address:\n        > 2586 Marigold Lane\n        > Topeka, Kansas 20682"));
         assertEquals(true, branch.asMap().containsKey("vice president"));
     }
 
     @Test
     void dict_01() {
-        NestedTextBranch branch = (NestedTextBranch) NestedTextReader.read(new StringReader("key1:\nkey2:\n"));
+        NestedTextNode branch = NestedTextReader.read(new StringReader("key1:\nkey2:\n"));
         assertTrue(branch.asMap().containsKey("key1"));
         assertTrue(branch.asMap().containsKey("key2"));
     }

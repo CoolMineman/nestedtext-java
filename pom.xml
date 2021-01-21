@@ -3,8 +3,8 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mkyong.core</groupId>
-    <artifactId>junit5-maven</artifactId>
+    <groupId>io.github.coolmineman</groupId>
+    <artifactId>nestedtext</artifactId>
     <version>1.0</version>
 
     <properties>

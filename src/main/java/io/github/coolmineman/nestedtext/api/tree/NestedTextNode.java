@@ -1,23 +1,37 @@
 package io.github.coolmineman.nestedtext.api.tree;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public abstract class NestedTextNode {
+import io.github.coolmineman.nestedtext.impl.NestedTextBranch;
+import io.github.coolmineman.nestedtext.impl.NestedTextLeaf;
 
-    /* Package Private */ NestedTextNode() {
+public interface NestedTextNode {
+
+    boolean isLeaf();
+
+    String asLeafString();
+
+    boolean isMap();
+
+    Map<String, NestedTextNode> asMap();
+
+    boolean isList();
+
+    List<NestedTextNode> asList();
+
+    public static NestedTextNode of(String string) {
+        return new NestedTextLeaf(string);
     }
 
-    public abstract boolean isLeaf();
+    public static NestedTextNode of(Map<String, NestedTextNode> dict) {
+        return new NestedTextBranch(dict, Collections.emptyList());
+    }
 
-    public abstract String asLeafString();
-
-    public abstract boolean isMap();
-
-    public abstract Map<String, NestedTextNode> asMap();
-
-    public abstract boolean isList();
-
-    public abstract List<NestedTextNode> asList();
+    public static NestedTextNode of(List<NestedTextNode> list) {
+        return new NestedTextBranch(Collections.emptyMap(), list);
+    }
 
 }

@@ -8,8 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.coolmineman.nestedtext.api.tree.NestedTextBranch;
-import io.github.coolmineman.nestedtext.api.tree.NestedTextLeaf;
 import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
 import io.github.coolmineman.nestedtext.impl.CommentLine;
 import io.github.coolmineman.nestedtext.impl.KeyLine;
@@ -17,6 +15,8 @@ import io.github.coolmineman.nestedtext.impl.KeyWithLeafLine;
 import io.github.coolmineman.nestedtext.impl.Line;
 import io.github.coolmineman.nestedtext.impl.ListItemLine;
 import io.github.coolmineman.nestedtext.impl.ListItemWithLeafLine;
+import io.github.coolmineman.nestedtext.impl.NestedTextBranch;
+import io.github.coolmineman.nestedtext.impl.NestedTextLeaf;
 import io.github.coolmineman.nestedtext.impl.NestedTextLexer;
 import io.github.coolmineman.nestedtext.impl.StringLine;
 

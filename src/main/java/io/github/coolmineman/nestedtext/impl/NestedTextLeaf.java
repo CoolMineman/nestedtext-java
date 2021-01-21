@@ -1,9 +1,11 @@
-package io.github.coolmineman.nestedtext.api.tree;
+package io.github.coolmineman.nestedtext.impl;
 
 import java.util.List;
 import java.util.Map;
 
-public final class NestedTextLeaf extends NestedTextNode {
+import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
+
+public final class NestedTextLeaf implements NestedTextNode {
     private final String leaf;
 
     public NestedTextLeaf(String leaf) {

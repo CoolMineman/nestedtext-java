@@ -1,11 +1,13 @@
-package io.github.coolmineman.nestedtext.api.tree;
+package io.github.coolmineman.nestedtext.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class NestedTextBranch extends NestedTextNode {
+import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
+
+public final class NestedTextBranch implements NestedTextNode {
 
     private final Map<String, NestedTextNode> dict;
     private final List<NestedTextNode> list;
