@@ -19,25 +19,25 @@ import com.google.gson.JsonParser;
 import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
 
 public class JsonUtil {
-    public static void assertNtEqualsJson(NestedTextNode node, JsonElement jsonElement) {
+    public static void assertNtEqualsJson(NestedTextNode node, JsonElement jsonElement, String message) {
         if (jsonElement.isJsonArray()) {
-            assertTrue(node.isList());
+            assertTrue(node.isList(), message);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
             List<NestedTextNode> nestedTextNodes = node.asList();
             for (int i = 0; i < jsonArray.size(); i++) {
-                assertNtEqualsJson(nestedTextNodes.get(i), jsonArray.get(i));
+                assertNtEqualsJson(nestedTextNodes.get(i), jsonArray.get(i), message);
             }
         } else if (jsonElement.isJsonObject()) {
-            assertTrue(node.isMap());
+            assertTrue(node.isMap(), message);
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             Map<String, NestedTextNode> map = node.asMap();
             for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
                 Objects.requireNonNull(map.get(entry.getKey()), "Error in " + entry.getKey());
-                assertNtEqualsJson(map.get(entry.getKey()), entry.getValue());
+                assertNtEqualsJson(map.get(entry.getKey()), entry.getValue(), message);
             }
         } else {
-            assertTrue(node.isLeaf(), "Failed For Leaf:" + jsonElement.toString());
-            assertEquals(jsonElement.getAsString(), node.asLeafString());
+            assertTrue(node.isLeaf(), message + " Failed For Leaf:" + jsonElement.toString());
+            assertEquals(jsonElement.getAsString(), node.asLeafString(), message);
         }
     }
 

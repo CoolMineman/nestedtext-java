@@ -46,6 +46,17 @@ public class ReaderTest {
         FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
         NestedTextNode node = NestedTextReader.read(ntFile);
         JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
+        JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"01", "16", "17", "18", "19", "20", "23"})
+    void dict(String a) throws Exception {
+        String dir = "nestedtext_tests/test_cases/dict_" + a + "/";
+        FileInputStream ntFile = new FileInputStream(dir + "load_in.nt");
+        FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
+        NestedTextNode node = NestedTextReader.read(ntFile);
+        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
+        JsonUtil.assertNtEqualsJson(node, jsonElement, "File " + a);
     }
 }

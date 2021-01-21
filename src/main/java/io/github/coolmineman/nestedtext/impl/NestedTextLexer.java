@@ -1,5 +1,9 @@
 package io.github.coolmineman.nestedtext.impl;
 
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import io.github.coolmineman.nestedtext.api.NestedTextParseException;
 import io.github.coolmineman.nestedtext.api.TabException;
 
@@ -23,8 +27,8 @@ public class NestedTextLexer {
                     result.comment = line.substring(i + 1);
                     return result;
                 case '"':
-                    int quoteColonSpaceIndex = line.indexOf("\": ");
-                    if (quoteColonSpaceIndex == -1 && line.charAt(line.length() - 1) == ':' && line.charAt(line.length() - 2) == '"') {
+                    Matcher matcher = Pattern.compile("(\"\\s*: )").matcher(line).region(i + 1, line.length() - 1);
+                    if (!matcher.find() && line.charAt(line.length() - 1) == ':' && line.charAt(line.length() - 2) == '"') {
                         KeyLine result4 = new KeyLine();
                         result4.indentSpaces = indent;
                         result4.key = line.substring(i + 1, line.length() - 2);
@@ -32,13 +36,13 @@ public class NestedTextLexer {
                     } else {
                         KeyWithLeafLine result5 = new KeyWithLeafLine();
                         result5.indentSpaces = indent;
-                        result5.key = line.substring(i + 1, quoteColonSpaceIndex);
-                        result5.leaf = line.substring(quoteColonSpaceIndex + 3);
+                        result5.key = line.substring(i + 1, matcher.start(1));
+                        result5.leaf = line.substring(matcher.end(1));
                         return result5;
                     }
                 case '\'':
-                    int quoteColonSpaceIndex2 = line.indexOf("': ");
-                    if (quoteColonSpaceIndex2 == -1 && line.charAt(line.length() - 1) == ':' && line.charAt(line.length() - 2) == '\'') {
+                    Matcher matcher2 = Pattern.compile("('\\s*: )").matcher(line).region(i + 1, line.length() - 1);
+                    if (!matcher2.find() && line.charAt(line.length() - 1) == ':' && line.charAt(line.length() - 2) == '\'') {
                         KeyLine result6 = new KeyLine();
                         result6.indentSpaces = indent;
                         result6.key = line.substring(i + 1, line.length() - 2);
@@ -46,8 +50,8 @@ public class NestedTextLexer {
                     } else {
                         KeyWithLeafLine result7 = new KeyWithLeafLine();
                         result7.indentSpaces = indent;
-                        result7.key = line.substring(i + 1, quoteColonSpaceIndex2);
-                        result7.leaf = line.substring(quoteColonSpaceIndex2 + 3);
+                        result7.key = line.substring(i + 1, matcher2.start(1));
+                        result7.leaf = line.substring(matcher2.end(1));
                         return result7;
                     }
                 case '-':

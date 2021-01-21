@@ -95,4 +95,22 @@ public class LexerTest {
         assertEquals(0, line3.indentSpaces);
         assertEquals("", line3.string);
     }
+
+    @Test
+    void edgeCase() {
+        String lineText = "\" \" key13: \" : value 13";
+        KeyWithLeafLine line = (KeyWithLeafLine) NestedTextLexer.lexLine(lineText, 1);
+        assertEquals(0, line.indentSpaces);
+        assertEquals(" \" key13: ", line.key);
+        assertEquals("value 13", line.leaf);
+    }
+
+    @Test
+    void edgetCase2() {
+        String lineText = "' \" key19'\" : ' : value 19";
+        KeyWithLeafLine line = (KeyWithLeafLine) NestedTextLexer.lexLine(lineText, 1);
+        assertEquals(0, line.indentSpaces);
+        assertEquals(" \" key19'\" : ", line.key);
+        assertEquals("value 19", line.leaf);
+    }
 }
