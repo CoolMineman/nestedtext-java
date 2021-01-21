@@ -9,6 +9,8 @@ import java.io.StringReader;
 import com.google.gson.JsonElement;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.coolmineman.nestedtext.api.NestedTextReader;
 import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
@@ -36,64 +38,12 @@ public class ReaderTest {
         assertEquals(" — ", node.asList().get(1).asLeafString());
     }
 
-    @Test
-    void holistic_1() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_1/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_1/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_2() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_2/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_2/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_3() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_3/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_3/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_4() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_4/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_4/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_5() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_5/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_5/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_6() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_6/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_6/load_out.json");
-        NestedTextNode node = NestedTextReader.read(ntFile);
-        JsonElement jsonElement = JsonUtil.readJson(jsonFile);
-        JsonUtil.assertNtEqualsJson(node, jsonElement);
-    }
-
-    @Test
-    void holistic_7() throws Exception {
-        FileInputStream ntFile = new FileInputStream("nestedtext_tests/test_cases/holistic_7/load_in.nt");
-        FileInputStream jsonFile = new FileInputStream("nestedtext_tests/test_cases/holistic_7/load_out.json");
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7})
+    void holistic(int a) throws Exception {
+        String dir = "nestedtext_tests/test_cases/holistic_" + a + "/";
+        FileInputStream ntFile = new FileInputStream(dir + "load_in.nt");
+        FileInputStream jsonFile = new FileInputStream(dir + "load_out.json");
         NestedTextNode node = NestedTextReader.read(ntFile);
         JsonElement jsonElement = JsonUtil.readJson(jsonFile);
         JsonUtil.assertNtEqualsJson(node, jsonElement);
