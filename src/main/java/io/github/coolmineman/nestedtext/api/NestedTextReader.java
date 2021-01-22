@@ -60,6 +60,8 @@ public final class NestedTextReader {
                 if (!(line1 instanceof CommentLine)) lines.add(line1); // Ignore Comments (For Now)
             }
             return parseLines(lines);
+        } catch (NestedTextParseException e) {
+            throw e;
         } catch (Exception e) {
             throw new NestedTextParseException(e);
         }

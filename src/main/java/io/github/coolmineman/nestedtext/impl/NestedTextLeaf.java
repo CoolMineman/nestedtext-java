@@ -7,6 +7,7 @@ import io.github.coolmineman.nestedtext.api.tree.NestedTextNode;
 
 public final class NestedTextLeaf implements NestedTextNode {
     private final String leaf;
+    private String comment = null;
 
     public NestedTextLeaf(String leaf) {
         this.leaf = leaf;
@@ -44,16 +45,34 @@ public final class NestedTextLeaf implements NestedTextNode {
 
     @Override
     public int hashCode() {
-        return leaf.hashCode();
+        return 0; //TODO old hashcode was broken
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass())
+        if (!(obj instanceof NestedTextNode)) {
             return false;
-        return leaf.equals(((NestedTextLeaf)obj).asLeafString());
+        }
+        NestedTextNode other = (NestedTextNode) obj;
+        if (!other.isLeaf()) {
+            return false;
+        }
+        if (other.isMap() || other.isList()) {
+            return false;
+        }
+        return this.asLeafString().equals(other.asLeafString());
+    }
+
+    @Override
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @Override
+    public String getComment() {
+        return comment;
     }
     
 }

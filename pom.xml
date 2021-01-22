@@ -15,6 +15,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>20.1.0</version>
+        </dependency>
+
         <!-- junit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

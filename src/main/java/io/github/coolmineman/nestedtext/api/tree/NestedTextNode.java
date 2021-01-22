@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
 import io.github.coolmineman.nestedtext.impl.NestedTextBranch;
 import io.github.coolmineman.nestedtext.impl.NestedTextLeaf;
 
@@ -20,6 +22,14 @@ public interface NestedTextNode {
     boolean isList();
 
     List<NestedTextNode> asList();
+
+    void setComment(String comment);
+
+    /**
+     * Only works if setComment was called; This library does not parse comments.
+     * @return Null or String
+     */
+    @Nullable String getComment();
 
     public static NestedTextNode of(String string) {
         return new NestedTextLeaf(string);
