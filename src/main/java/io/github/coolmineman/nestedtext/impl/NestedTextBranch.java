@@ -72,8 +72,8 @@ public final class NestedTextBranch implements NestedTextNode {
             if (!other.isMap()) {
                 return false;
             }
-            if (!mapsEqual(this.asMap(), other.asMap())) {
-            // if (!this.asMap().equals(other.asMap())) {
+            // if (!mapsEqual(this.asMap(), other.asMap())) {
+            if (!this.asMap().equals(other.asMap())) {
                 return false;
             }
         }

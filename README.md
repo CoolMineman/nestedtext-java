@@ -7,6 +7,9 @@ Simple No Dependency NestedText Library For Java 8+
 * Simple API
 * Supports Writing (With Comments)
 
+# Bintray
+[https://bintray.com/coolmineman/coolmaven/nestedtext](https://bintray.com/coolmineman/coolmaven/nestedtext)
+
 ## TODO
 * Not Fully Spec Compliant (Yet)
 * Better Errors

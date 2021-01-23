@@ -27,7 +27,7 @@ class WriterTest {
         StringWriter writer = new StringWriter();
         NestedTextWriter.write(node, writer);
         NestedTextNode node2 = NestedTextReader.read(new StringReader(writer.toString()));
-        assertTrue(node.equals(node2), Integer.toString(a));
+        assertEquals(node, node2, Integer.toString(a));
     }
 
     @ParameterizedTest
@@ -38,7 +38,6 @@ class WriterTest {
         NestedTextNode node = NestedTextReader.read(ntFile);
         StringWriter writer = new StringWriter();
         NestedTextWriter.write(node, writer);
-        System.out.print(writer.toString());
         NestedTextNode node2 = NestedTextReader.read(new StringReader(writer.toString()));
         assertEquals(node, node2, a);
     }
@@ -58,7 +57,6 @@ class WriterTest {
         NestedTextNode node = NestedTextNode.of(Collections.singletonMap(annoyingString, NestedTextNode.of("ahhhhhhh")));
         StringWriter writer = new StringWriter();
         NestedTextWriter.write(node, writer);
-        System.out.print(writer.toString());
         NestedTextNode node2 = NestedTextReader.read(new StringReader(writer.toString()));
         assertEquals(node, node2);
     }
@@ -69,7 +67,6 @@ class WriterTest {
         NestedTextNode node = NestedTextReader.read(new StringReader(ir));
         StringWriter writer = new StringWriter();
         NestedTextWriter.write(node, writer);
-        System.out.print(writer.toString());
         NestedTextNode node2 = NestedTextReader.read(new StringReader(writer.toString()));
         assertEquals(node, node2);
     }
