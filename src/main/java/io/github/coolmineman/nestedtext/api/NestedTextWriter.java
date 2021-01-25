@@ -35,18 +35,22 @@ public class NestedTextWriter {
 
     private static void writeNode(NestedTextNode node, Writer writer, int currentIndent, int indent) throws Exception {
         if (node.getComment() != null) {
-            indent(currentIndent, writer);
-            writer.write("# ");
-            writer.write(node.getComment());
-            writer.write('\n');
+            for (String commentLine : node.getComment().split("\\n")) {
+                indent(currentIndent, writer);
+                writer.write("# ");
+                writer.write(commentLine);
+                writer.write('\n');
+            }
         }
         if (node.isMap()) {
             for (Entry<String, NestedTextNode> entry : node.asMap().entrySet()) {
                 if (entry.getValue().getComment() != null) {
-                    indent(currentIndent, writer);
-                    writer.write("# ");
-                    writer.write(entry.getValue().getComment());
-                    writer.write('\n');
+                    for (String commentLine : entry.getValue().getComment().split("\\n")) {
+                        indent(currentIndent, writer);
+                        writer.write("# ");
+                        writer.write(commentLine);
+                        writer.write('\n');
+                    }
                 }
                 indent(currentIndent, writer);
                 writer.write(escapeKey(entry.getKey()));
@@ -63,10 +67,12 @@ public class NestedTextWriter {
         } else if (node.isList()) {
             for (NestedTextNode node2 : node.asList()) {
                 if (node2.getComment() != null) {
-                    indent(currentIndent, writer);
-                    writer.write("# ");
-                    writer.write(node2.getComment());
-                    writer.write('\n');
+                    for (String commentLine : node2.getComment().split("\\n")) {
+                        indent(currentIndent, writer);
+                        writer.write("# ");
+                        writer.write(commentLine);
+                        writer.write('\n');
+                    }
                 }
                 indent(currentIndent, writer);
                 boolean singleLineString = node2.isLeaf() && node2.asLeafString().indexOf('\n') == -1;
