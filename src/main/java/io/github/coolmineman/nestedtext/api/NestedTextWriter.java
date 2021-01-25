@@ -42,6 +42,12 @@ public class NestedTextWriter {
         }
         if (node.isMap()) {
             for (Entry<String, NestedTextNode> entry : node.asMap().entrySet()) {
+                if (entry.getValue().getComment() != null) {
+                    indent(currentIndent, writer);
+                    writer.write("# ");
+                    writer.write(entry.getValue().getComment());
+                    writer.write('\n');
+                }
                 indent(currentIndent, writer);
                 writer.write(escapeKey(entry.getKey()));
                 boolean singleLineString = entry.getValue().isLeaf() && entry.getValue().asLeafString().indexOf('\n') == -1;
@@ -56,6 +62,12 @@ public class NestedTextWriter {
             }
         } else if (node.isList()) {
             for (NestedTextNode node2 : node.asList()) {
+                if (node2.getComment() != null) {
+                    indent(currentIndent, writer);
+                    writer.write("# ");
+                    writer.write(node2.getComment());
+                    writer.write('\n');
+                }
                 indent(currentIndent, writer);
                 boolean singleLineString = node2.isLeaf() && node2.asLeafString().indexOf('\n') == -1;
                 if (singleLineString) {
