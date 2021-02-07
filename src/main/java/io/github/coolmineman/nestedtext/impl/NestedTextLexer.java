@@ -101,13 +101,13 @@ public class NestedTextLexer {
         if (colonSpaceIndex == -1 && line.charAt(line.length() - 1) == ':') {
             KeyLine result0 = new KeyLine();
             result0.indentSpaces = indent;
-            result0.key = line.substring(i, line.length() - 1).stripTrailing(); //substring ends at endIndex - 1
+            result0.key = StringHelper.stripTrailing(line.substring(i, line.length() - 1)); //substring ends at endIndex - 1
             return result0;
         } else {
             KeyWithLeafLine result00 = new KeyWithLeafLine();
             result00.indentSpaces = indent;
             if (colonSpaceIndex == -1) throw new NestedTextParseException(lineNumber, 0, "Invalid Line (Comment Should Start With #)");
-            result00.key = line.substring(i, colonSpaceIndex).stripTrailing();
+            result00.key = StringHelper.stripTrailing(line.substring(i, colonSpaceIndex));
             result00.leaf = line.substring(colonSpaceIndex + 2);
             return result00;
         }
