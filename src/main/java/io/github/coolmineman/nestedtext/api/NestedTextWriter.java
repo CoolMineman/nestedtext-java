@@ -25,7 +25,7 @@ public class NestedTextWriter {
 
     public static void write(NestedTextNode node, Writer writer, int indent) throws NestedTextWriteException {
         try {
-            writeNode(node, writer, 0, indent);
+            writeNode(node, writer, 0, indent, true);
         } catch (NestedTextWriteException e) {
             throw e;
         } catch (Exception e) {
@@ -33,8 +33,8 @@ public class NestedTextWriter {
         }
     }
 
-    private static void writeNode(NestedTextNode node, Writer writer, int currentIndent, int indent) throws Exception {
-        if (node.getComment() != null) {
+    private static void writeNode(NestedTextNode node, Writer writer, int currentIndent, int indent, boolean topLevelComment) throws Exception {
+        if (topLevelComment && node.getComment() != null) {
             for (String commentLine : node.getComment().split("\\n")) {
                 indent(currentIndent, writer);
                 writer.write("# ");
@@ -61,7 +61,7 @@ public class NestedTextWriter {
                     writer.write('\n');
                 } else {
                     writer.write(":\n");
-                    writeNode(entry.getValue(), writer, currentIndent + indent, indent);
+                    writeNode(entry.getValue(), writer, currentIndent + indent, indent, false);
                 }
             }
         } else if (node.isList()) {
@@ -82,7 +82,7 @@ public class NestedTextWriter {
                     writer.write('\n');
                 } else {
                     writer.write("-\n");
-                    writeNode(node2, writer, currentIndent + indent, indent);
+                    writeNode(node2, writer, currentIndent + indent, indent, false);
                 }
             }
         } else if (node.isLeaf()) {
