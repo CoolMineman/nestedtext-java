@@ -93,10 +93,13 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-coolmineman-coolmaven</id>
-            <name>coolmineman-coolmaven</name>
-            <url>https://api.bintray.com/maven/coolmineman/coolmaven/nestedtext/;publish=1</url>
+            <id>thecursedfabricproject</id>
+            <url>https://gitlab.com/api/v4/projects/24907460/packages/maven</url>
         </repository>
+        <snapshotRepository>
+            <id>thecursedfabricproject</id>
+            <url>https://gitlab.com/api/v4/projects/24907460/packages/maven</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
